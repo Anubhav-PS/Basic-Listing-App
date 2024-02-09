@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/surface_dim"
-        tools:context=".ProductFeedFragment">
+        tools:context=".ui.fragments.ProductFeedFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/productsRecyclerView"

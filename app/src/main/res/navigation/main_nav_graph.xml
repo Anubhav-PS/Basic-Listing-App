@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/productFeedFragment"
-        android:name="com.anubhav.swipetask.ProductFeedFragment"
+        android:name="com.anubhav.swipetask.ui.fragments.ProductFeedFragment"
         android:label="fragment_product_feed"
         tools:layout="@layout/fragment_product_feed" >
         <action
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/uploadNewProductFragment"
-        android:name="com.anubhav.swipetask.UploadNewProductFragment"
+        android:name="com.anubhav.swipetask.ui.fragments.UploadNewProductFragment"
         android:label="fragment_upload_new_product"
         tools:layout="@layout/fragment_upload_new_product" >
         <action
