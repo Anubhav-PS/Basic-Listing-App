@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="product"
+            type="com.anubhav.swipetask.domains.Product" />
+
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -51,6 +55,7 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/montserrat_semibold"
                     android:maxLines="1"
+                    android:text="@{product.productName}"
                     android:textAlignment="viewStart"
                     android:textColor="@color/text_on_white_variant_2"
                     android:textSize="16sp"
@@ -69,6 +74,7 @@
                     android:background="@drawable/rounded_text_view_background"
                     android:fontFamily="@font/montserrat_medium"
                     android:maxLines="1"
+                    android:text="@{product.productType}"
                     android:textColor="@color/text_on_white_variant_1"
                     android:textSize="10sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -85,6 +91,7 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/montserrat"
                     android:maxLines="1"
+                    android:text="@{`Tax  ₹` + String.valueOf(product.tax)}"
                     android:textAlignment="viewStart"
                     android:textColor="@color/text_on_white_variant_1"
                     android:textSize="12sp"
@@ -104,6 +111,7 @@
                     android:fontFamily="@font/montserrat_medium"
                     android:maxLines="1"
                     android:textAlignment="viewEnd"
+                    android:text="@{`Price  ₹` + String.valueOf(product.price)}"
                     android:textColor="@color/text_on_white_variant_2"
                     android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="parent"

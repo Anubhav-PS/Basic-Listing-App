@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/productFeedFragment"
-        android:name="com.anubhav.swipetask.ui.fragments.ProductFeedFragment"
+        android:name="com.anubhav.swipetask.ui.fragments.productfeedfragment.ProductFeedFragment"
         android:label="fragment_product_feed"
         tools:layout="@layout/fragment_product_feed" >
         <action
