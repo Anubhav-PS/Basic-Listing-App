@@ -2,4 +2,13 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="surface_dim">#F5F6FB</color>
+    <color name="primary">#2E84D2</color>
+
+    <color name="text_on_white_variant_0">#707070</color>
+    <color name="text_on_white_variant_1">#4F4E4E</color>
+    <color name="text_on_white_variant_2">#000000</color>
+
+
 </resources>

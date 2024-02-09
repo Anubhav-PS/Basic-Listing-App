@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/productFeedFragment">
+
+
+    <fragment
+        android:id="@+id/productFeedFragment"
+        android:name="com.anubhav.swipetask.ProductFeedFragment"
+        android:label="fragment_product_feed"
+        tools:layout="@layout/fragment_product_feed" >
+        <action
+            android:id="@+id/action_productFeedFragment_to_uploadNewProductFragment"
+            app:destination="@id/uploadNewProductFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/uploadNewProductFragment"
+        android:name="com.anubhav.swipetask.UploadNewProductFragment"
+        android:label="fragment_upload_new_product"
+        tools:layout="@layout/fragment_upload_new_product" >
+        <action
+            android:id="@+id/action_uploadNewProductFragment_to_productFeedFragment"
+            app:destination="@id/productFeedFragment" />
+    </fragment>
+
+
+</navigation>
