@@ -1,4 +1,4 @@
-package com.anubhav.swipetask.domains
+package com.anubhav.swipetask.models
 
 import com.squareup.moshi.Json
 

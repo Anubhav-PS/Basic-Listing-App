@@ -1,6 +1,6 @@
 package com.anubhav.swipetask.services.services
 
-import com.anubhav.swipetask.domains.Product
+import com.anubhav.swipetask.models.Product
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.POST

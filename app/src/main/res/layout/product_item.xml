@@ -7,7 +7,7 @@
 
         <variable
             name="product"
-            type="com.anubhav.swipetask.domains.Product" />
+            type="com.anubhav.swipetask.models.Product" />
 
     </data>
 

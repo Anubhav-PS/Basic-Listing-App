@@ -61,4 +61,14 @@ dependencies {
     implementation ("com.squareup.moshi:moshi-kotlin:1.15.0")
     implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
 
+    // Koin
+    implementation("io.insert-koin:koin-android:3.6.0-wasm-alpha2")
+
+    // LiveData
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+
+    //coroutines
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+
 }

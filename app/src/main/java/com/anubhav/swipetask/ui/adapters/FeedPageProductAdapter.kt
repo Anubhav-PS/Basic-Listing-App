@@ -6,9 +6,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.anubhav.swipetask.R
 import com.anubhav.swipetask.databinding.ProductItemBinding
-import com.anubhav.swipetask.domains.Product
+import com.anubhav.swipetask.models.Product
 
-class FeedPageProductAdapter(private val productsList: List<Product>) :
+class FeedPageProductAdapter(val productList: List<Product>) :
     RecyclerView.Adapter<FeedPageProductAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -19,11 +19,11 @@ class FeedPageProductAdapter(private val productsList: List<Product>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindData(productsList[position])
+        holder.bindData(productList[position])
     }
 
     override fun getItemCount(): Int {
-        return productsList.size
+        return productList.size
     }
 
     inner class ViewHolder(private val binding: ProductItemBinding) :
