@@ -24,6 +24,7 @@ class ProductFeedViewModel(private val productRepo: ProductsRepository) : ViewMo
     var productListFromNetworkStatus: LiveData<DataStatus.Status> = _productListFromNetworkStatus
 
     private fun pullProductsFromServer() = viewModelScope.launch(Dispatchers.IO) {
+        _productListFromNetworkStatus.postValue(DataStatus.Status.Loading)
         productRepo.pullProductsFromServer().collect {
             when (it.status) {
                 DataStatus.Status.Failed -> {

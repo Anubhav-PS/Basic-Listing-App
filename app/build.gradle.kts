@@ -76,4 +76,10 @@ dependencies {
     ksp("androidx.room:room-compiler:2.6.1")
     implementation ("androidx.room:room-ktx:2.6.1")
 
+    //shimmer layout
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
+
+    //coil
+    implementation ("io.coil-kt:coil:2.4.0")
+
 }
