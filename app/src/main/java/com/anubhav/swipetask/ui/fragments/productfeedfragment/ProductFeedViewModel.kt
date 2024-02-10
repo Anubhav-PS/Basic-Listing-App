@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.anubhav.swipetask.models.Product
 import com.anubhav.swipetask.repositories.ProductsRepository
@@ -17,20 +18,41 @@ import kotlinx.coroutines.launch
 class ProductFeedViewModel(private val productRepo: ProductsRepository) : ViewModel(),
     LifecycleEventObserver {
 
-    private val _productList = MutableLiveData<DataStatus<List<Product>>>()
     private val TAG = "Product-Feed-View-Model"
-    val productList: LiveData<DataStatus<List<Product>>>
-        get() = _productList
+    val productList: LiveData<List<Product>> = productRepo.allProducts.asLiveData()
+    private val _productListFromNetworkStatus: MutableLiveData<DataStatus.Status> = MutableLiveData()
+    var productListFromNetworkStatus: LiveData<DataStatus.Status> = _productListFromNetworkStatus
 
-    private fun downloadProducts() = viewModelScope.launch(Dispatchers.IO) {
-        productRepo.getAllProduct().collect {
-            _productList.postValue(it)
+    private fun pullProductsFromServer() = viewModelScope.launch(Dispatchers.IO) {
+        productRepo.pullProductsFromServer().collect {
+            when (it.status) {
+                DataStatus.Status.Failed -> {
+                    _productListFromNetworkStatus.postValue(DataStatus.Status.Failed)
+                }
+
+                DataStatus.Status.Loading -> {
+                    _productListFromNetworkStatus.postValue(DataStatus.Status.Loading)
+                }
+
+                DataStatus.Status.Success -> {
+                    it.data?.apply {
+                        Log.i(TAG,"List is $this")
+                        saveProductsToDB(this)
+                    }
+                }
+            }
         }
     }
+
+    private fun saveProductsToDB(productList: List<Product>) =
+        viewModelScope.launch(Dispatchers.IO) {
+            productRepo.storeProduct(productList)
+        }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         when (event) {
             Lifecycle.Event.ON_CREATE -> {
+                //start shimmer
 
             }
 
@@ -39,7 +61,7 @@ class ProductFeedViewModel(private val productRepo: ProductsRepository) : ViewMo
             }
 
             Lifecycle.Event.ON_RESUME -> {
-                downloadProducts()
+                pullProductsFromServer()
             }
 
             Lifecycle.Event.ON_PAUSE -> {

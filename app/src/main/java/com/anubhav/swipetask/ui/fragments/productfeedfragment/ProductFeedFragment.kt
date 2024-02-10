@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anubhav.swipetask.databinding.FragmentProductFeedBinding
 import com.anubhav.swipetask.repositories.models.DataStatus
@@ -36,22 +35,18 @@ class ProductFeedFragment : Fragment() {
         binding.productsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.productList.observe(viewLifecycleOwner) {
-            when (it.status) {
-                DataStatus.Status.Failed -> {
-                    //show a snack bar there was an error
-                }
-
-                DataStatus.Status.Loading -> {
-                    //keep showing shimmer
-                }
-
-                DataStatus.Status.Success -> {
-                    it.data?.apply {
-                        binding.productsRecyclerView.adapter = FeedPageProductAdapter(this)
-                    }
-                }
+            it.apply {
+                //close shimmer
+                binding.productsRecyclerView.adapter = FeedPageProductAdapter(this)
             }
         }
+
+        viewModel.productListFromNetworkStatus.observe(viewLifecycleOwner){
+            if (it is DataStatus.Status.Failed){
+                //show error
+            }
+        }
+
     }
 
 }

@@ -8,7 +8,7 @@ import retrofit2.http.POST
 interface ProductsService {
 
     @GET("api/public/get")
-    suspend fun getProducts(): Response<List<Product>>
+    suspend fun getProducts(): Response<MutableList<Product>>
 
     @POST("api/public/add")
     suspend fun postProduct()

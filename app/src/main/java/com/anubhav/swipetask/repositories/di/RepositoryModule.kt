@@ -4,5 +4,5 @@ import com.anubhav.swipetask.repositories.ProductsRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    factory { ProductsRepository(get()) }
+    factory { ProductsRepository(get(),get()) }
 }

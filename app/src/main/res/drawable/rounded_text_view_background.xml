@@ -5,11 +5,11 @@
         android:width="0.2dp"
         android:color="@color/text_on_white_variant_1" />-->
 
-    <solid android:color="#F9A58B" />
+    <solid android:color="#DFE5EF" />
 
     <padding
-        android:left="8dp"
-        android:right="8dp"
+        android:left="10dp"
+        android:right="10dp"
         android:bottom="3dp"
         android:top="3dp" />
 

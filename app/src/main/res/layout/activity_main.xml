@@ -25,6 +25,7 @@
                 android:paddingEnd="10dp"
                 app:elevation="3dp"
                 android:elevation="3dp"
+                android:background="@color/primary"
                 android:theme="@style/ToolbarTheme"
                 app:title="Swipe POS"
                 app:titleTextColor="@color/white">
