@@ -43,21 +43,6 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:navGraph="@navigation/main_nav_graph" />
 
-       <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-           android:id="@+id/addProductExtendedFab"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           app:elevation="6dp"
-           app:iconTint="@color/white"
-           android:textColor="@color/white"
-           app:backgroundTint="@color/primary"
-           android:layout_margin="18dp"
-           android:text="New"
-           app:icon="@drawable/baseline_add_24"
-           android:layout_gravity="bottom|end">
-
-       </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

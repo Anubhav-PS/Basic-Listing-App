@@ -7,115 +7,140 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/productsCoordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/surface_dim"
         tools:context=".ui.fragments.productfeedfragment.ProductFeedFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/productFilterNSortConstraintLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/surface_dim">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/filterProductsTextLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:drawableStart="@drawable/baseline_filter_list_24"
-                android:drawablePadding="12dp"
-                android:drawableTint="@color/black"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                android:gravity="center"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="6dp"
-                android:text="Filter"
-                android:textColor="@color/text_on_white_variant_2"
-                android:textSize="13sp"
-                app:fontFamily="@font/montserrat"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/productFilterNSortConstraintLayout"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:orientation="horizontal"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </com.google.android.material.textview.MaterialTextView>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/sortProductsTextLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:drawableEnd="@drawable/baseline_sort_24"
-                android:drawablePadding="12dp"
-                android:drawableTint="@color/black"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                android:gravity="center"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="6dp"
-                android:text="Sort"
-                android:textColor="@color/text_on_white_variant_2"
-                android:textSize="13sp"
-                app:fontFamily="@font/montserrat"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-            </com.google.android.material.textview.MaterialTextView>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterProductsTextLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:drawableStart="@drawable/baseline_filter_list_24"
+                    android:drawablePadding="12dp"
+                    android:drawableTint="@color/black"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="4dp"
+                    android:text="Filter"
+                    android:textColor="@color/text_on_white_variant_2"
+                    android:textSize="12sp"
+                    app:fontFamily="@font/montserrat"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </com.google.android.material.textview.MaterialTextView>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/sortProductsTextLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:drawableEnd="@drawable/baseline_sort_24"
+                    android:drawablePadding="12dp"
+                    android:drawableTint="@color/black"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="4dp"
+                    android:text="Sort"
+                    android:textColor="@color/text_on_white_variant_2"
+                    android:textSize="12sp"
+                    app:fontFamily="@font/montserrat"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </com.google.android.material.textview.MaterialTextView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/productsRecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:paddingTop="8dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/productFilterNSortConstraintLayout"
+                tools:listitem="@layout/product_item">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/productsShimmerLayout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingTop="12dp">
+
+                    <include layout="@layout/shimmer_product_item" />
+
+                    <include layout="@layout/shimmer_product_item" />
+
+                    <include layout="@layout/shimmer_product_item" />
+
+                    <include layout="@layout/shimmer_product_item" />
+
+                    <include layout="@layout/shimmer_product_item" />
+
+                    <include layout="@layout/shimmer_product_item" />
+
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/productsRecyclerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:paddingTop="8dp"
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/addProductExtendedFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="18dp"
+            android:text="New"
+            android:textColor="@color/white"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/productFilterNSortConstraintLayout"
-            tools:listitem="@layout/product_item">
+            app:backgroundTint="@color/primary"
+            app:elevation="6dp"
+            app:icon="@drawable/baseline_add_24"
+            app:iconTint="@color/white">
 
-        </androidx.recyclerview.widget.RecyclerView>
+        </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
 
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/productsShimmerLayout"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:visibility="visible"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <include layout="@layout/shimmer_product_item" />
-
-                <include layout="@layout/shimmer_product_item" />
-
-                <include layout="@layout/shimmer_product_item" />
-
-                <include layout="@layout/shimmer_product_item" />
-
-                <include layout="@layout/shimmer_product_item" />
-
-                <include layout="@layout/shimmer_product_item" />
-
-            </LinearLayout>
-
-        </com.facebook.shimmer.ShimmerFrameLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

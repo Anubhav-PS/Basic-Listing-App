@@ -9,6 +9,9 @@
             name="product"
             type="com.anubhav.swipetask.models.Product" />
 
+        <import type="android.view.View" />
+        <import type="com.anubhav.swipetask.utils.BindingAdaptersKt" />
+
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -114,7 +117,7 @@
                     android:fontFamily="@font/montserrat_medium"
                     android:maxLines="1"
                     android:textAlignment="viewEnd"
-                    android:text="@{`Price  ₹` + String.valueOf(product.price)}"
+                    app:priceInINR="@{product.price}"
                     android:textColor="@color/text_on_white_variant_2"
                     android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="parent"
