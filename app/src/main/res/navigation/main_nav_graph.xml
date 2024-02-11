@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/productFeedFragment"
         android:name="com.anubhav.swipetask.ui.fragments.productfeedfragment.ProductFeedFragment"
-        android:label="fragment_product_feed"
+        android:label="Swipe POS"
         tools:layout="@layout/fragment_product_feed" >
         <action
             android:id="@+id/action_productFeedFragment_to_uploadNewProductFragment"
@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/uploadNewProductFragment"
         android:name="com.anubhav.swipetask.ui.fragments.UploadNewProductFragment"
-        android:label="fragment_upload_new_product"
+        android:label="Add Product"
         tools:layout="@layout/fragment_upload_new_product" >
         <action
             android:id="@+id/action_uploadNewProductFragment_to_productFeedFragment"

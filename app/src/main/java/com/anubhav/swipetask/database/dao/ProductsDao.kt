@@ -24,6 +24,6 @@ interface ProductsDao {
     fun getAllProducts(): Flow<MutableList<Product>>
 
     @Query("SELECT * FROM $PRODUCTS_TABLE_NAME WHERE productName LIKE '%' || :query || '%'")
-    fun searchForProductName(query: String): Flow<MutableList<Product>>
+    fun searchForProductName(query: String): Flow<List<Product>>
 
 }

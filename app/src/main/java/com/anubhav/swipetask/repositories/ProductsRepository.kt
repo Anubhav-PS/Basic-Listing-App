@@ -1,5 +1,6 @@
 package com.anubhav.swipetask.repositories
 
+import android.util.Log
 import com.anubhav.swipetask.database.dao.ProductsDao
 import com.anubhav.swipetask.models.Product
 import com.anubhav.swipetask.repositories.models.DataStatus
@@ -7,8 +8,10 @@ import com.anubhav.swipetask.services.services.ProductsService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.toList
 
 class ProductsRepository(
     private val productService: ProductsService,
@@ -40,5 +43,12 @@ class ProductsRepository(
     suspend fun storeProduct(products: List<Product>) {
         productsDao.insertProduct(products)
     }
+
+    suspend fun searchProduct(query: String) = flow {
+        emit(DataStatus.loading())
+        productsDao.searchForProductName(query).collect {
+            emit(DataStatus.success(it))
+        }
+    }.catch { emit(DataStatus.failed(it.message.toString())) }.flowOn(Dispatchers.IO)
 
 }

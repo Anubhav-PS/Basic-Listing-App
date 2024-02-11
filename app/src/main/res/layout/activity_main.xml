@@ -14,18 +14,16 @@
             android:id="@+id/mainAppBar"
             android:layout_width="match_parent"
             android:background="@color/primary"
-            app:elevation="3dp"
-            android:elevation="3dp"
             android:layout_height="wrap_content">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/mainToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="82dp"
-                android:paddingEnd="10dp"
-                app:elevation="3dp"
-                android:elevation="3dp"
                 android:background="@color/primary"
+                android:paddingEnd="10dp"
+                android:paddingTop="8dp"
+                android:gravity="center_vertical"
                 android:theme="@style/ToolbarTheme"
                 app:title="Swipe POS"
                 app:titleTextColor="@color/white">

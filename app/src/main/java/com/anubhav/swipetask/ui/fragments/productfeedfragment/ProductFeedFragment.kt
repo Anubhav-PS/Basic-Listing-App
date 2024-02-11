@@ -3,12 +3,19 @@ package com.anubhav.swipetask.ui.fragments.productfeedfragment
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.anubhav.swipetask.R
 import com.anubhav.swipetask.databinding.FragmentProductFeedBinding
 import com.anubhav.swipetask.repositories.models.DataStatus
 import com.anubhav.swipetask.ui.adapters.FeedPageProductAdapter
@@ -27,6 +34,7 @@ class ProductFeedFragment : Fragment() {
     private val connectivityListener: ConnectivityListener by inject()
     private var networkNotAvailable: Boolean = false
     private var freshListIsLoadedFromServer: Boolean = false
+    private var isSearchViewOpened: Boolean = false
     val TAG = "Products-Feed-Fragment"
 
     override fun onCreateView(
@@ -42,6 +50,48 @@ class ProductFeedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.product_feed_page_toolbar, menu)
+                val search = menu.findItem(R.id.searchMenu)
+                val searchView = search.actionView as? SearchView
+                searchView?.queryHint = "Search for products.."
+                searchView?.isSubmitButtonEnabled = true
+                searchView?.maxWidth = Integer.MAX_VALUE
+                searchView?.setOnCloseListener {
+                    isSearchViewOpened = false
+                    binding.productFilterNSortConstraintLayout.visibility = View.VISIBLE
+                    binding.addProductExtendedFab.visibility = View.VISIBLE
+                    false
+                }
+                searchView?.setOnSearchClickListener {
+                    isSearchViewOpened = true
+                    binding.productFilterNSortConstraintLayout.visibility = View.GONE
+                }
+                searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        query?.apply {
+                            val searchQuery = "%$this%"
+                            viewModel.searchProduct(searchQuery)
+                        }
+                        return true
+                    }
+
+                    override fun onQueryTextChange(query: String?): Boolean {
+                        query?.apply {
+                            val searchQuery = "%$this%"
+                            viewModel.searchProduct(searchQuery)
+                        }
+                        return true
+                    }
+                })
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return false
+            }
+        }, viewLifecycleOwner)
 
         binding.productsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -95,6 +145,7 @@ class ProductFeedFragment : Fragment() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 when (newState) {
                     RecyclerView.SCROLL_STATE_IDLE -> {
+                        if (isSearchViewOpened) return
                         binding.addProductExtendedFab.show()
                         binding.productFilterNSortConstraintLayout.visibility = View.VISIBLE
                     }
@@ -154,6 +205,49 @@ class ProductFeedFragment : Fragment() {
                 snackBar.setBackgroundTint(Color.parseColor("#B00020"))
                 snackBar.setTextColor(Color.parseColor("#FFFFFF"))
                 snackBar.show()
+            }
+        }
+        viewModel.queriedProduct.observe(viewLifecycleOwner) {
+            when (it.status) {
+                DataStatus.Status.Failed -> {
+                    val snackBar = Snackbar.make(
+                        binding.productsCoordinatorLayout,
+                        "We encountered an issue while processing your query.",
+                        Snackbar.LENGTH_LONG
+                    )
+                    snackBar.setBackgroundTint(Color.parseColor("#FFFFFF"))
+                    snackBar.setTextColor(Color.parseColor("#000000"))
+                    snackBar.show()
+                }
+
+                DataStatus.Status.Loading -> {
+                    binding.productsRecyclerView.visibility = View.GONE
+                    binding.addProductExtendedFab.visibility = View.GONE
+                    binding.productsShimmerLayout.visibility = View.VISIBLE
+                    binding.productsShimmerLayout.startShimmer()
+                }
+
+                DataStatus.Status.Success -> {
+                    binding.productsRecyclerView.visibility = View.VISIBLE
+                    binding.addProductExtendedFab.visibility = View.VISIBLE
+                    binding.productsShimmerLayout.stopShimmer()
+                    binding.productsShimmerLayout.visibility = View.GONE
+                    it.data?.apply {
+                        if (this.isNotEmpty()) {
+                            binding.productsRecyclerView.adapter =
+                                FeedPageProductAdapter(it.data.toList())
+                            return@observe
+                        }
+                        val snackBar = Snackbar.make(
+                            binding.productsCoordinatorLayout,
+                            "Sorry, we couldn't find any results matching your search.",
+                            Snackbar.LENGTH_LONG
+                        )
+                        snackBar.setBackgroundTint(Color.parseColor("#FFFFFF"))
+                        snackBar.setTextColor(Color.parseColor("#000000"))
+                        snackBar.show()
+                    }
+                }
             }
         }
     }

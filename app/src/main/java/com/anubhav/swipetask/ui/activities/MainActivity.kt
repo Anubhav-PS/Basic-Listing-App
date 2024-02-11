@@ -18,6 +18,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
+        setSupportActionBar(binding.mainToolbar)
         lifecycle.addObserver(viewModel)
     }
+
 }
