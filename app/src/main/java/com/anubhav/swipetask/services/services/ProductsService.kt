@@ -18,21 +18,12 @@ interface ProductsService {
 
     @Multipart
     @POST("api/public/add")
-    fun postProductWithImage(
+    suspend fun postProductWithImage(
         @Part("product_name") productName: RequestBody,
         @Part("product_type") productType: RequestBody,
         @Part("price") productPrice: RequestBody,
         @Part("tax") productTax: RequestBody,
-        @Part productImage: MultipartBody.Part,
-    ): Call<ProductUploadResponse>
-
-    @Multipart
-    @POST("api/public/add")
-    fun postProductWithoutImage(
-        @Part("product_name") productName: RequestBody,
-        @Part("product_type") productType: RequestBody,
-        @Part("price") productPrice: RequestBody,
-        @Part("tax") productTax: RequestBody
-    ): Call<ProductUploadResponse>
+        @Part productImage: MultipartBody.Part? = null,
+    ): Response<ProductUploadResponse>
 
 }

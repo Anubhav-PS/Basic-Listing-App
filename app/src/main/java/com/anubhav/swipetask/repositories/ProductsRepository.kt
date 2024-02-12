@@ -12,20 +12,13 @@ import com.anubhav.swipetask.utils.getFileName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -51,8 +44,7 @@ class ProductsRepository(
                 }
             }
 
-            400 -> emit(DataStatus.failed(networkResult.message().toString()))
-            500 -> emit(DataStatus.failed(networkResult.message().toString()))
+            400, 500 -> emit(DataStatus.failed(networkResult.message().toString()))
         }
     }.catch { emit(DataStatus.failed(it.message.toString())) }
         .flowOn(Dispatchers.IO)
@@ -72,100 +64,42 @@ class ProductsRepository(
         product: Product,
         uri: Uri?
     ) = flow {
-        val output = Channel<DataStatus<ProductUploadResponse>>()
-        scope.launch {
-            output.send(DataStatus.loading())
-            if (uri != null) {
-                //copying file from external storage to app cache
-                val parcelFileDescriptor =
-                    context.contentResolver.openFileDescriptor(uri, "r", null)
-                val file = File(context.cacheDir, context.contentResolver.getFileName(uri))
-                val inputStream = FileInputStream(parcelFileDescriptor?.fileDescriptor)
-                val outputStream = FileOutputStream(file)
-                inputStream.copyTo(outputStream)
-                //create the request body
-                val requestBody = ProductUploadRequest(file, "image")
-                val request = productService.postProductWithImage(
-                    product.productName.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
-                    product.productType.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
-                    product.price.toString()
-                        .toRequestBody("multipart/form-data".toMediaTypeOrNull()),
-                    product.tax.toString()
-                        .toRequestBody("multipart/form-data".toMediaTypeOrNull()),
-                    MultipartBody.Part.createFormData("file", "file", requestBody)
-                )
-                request.enqueue(
-                    object : Callback<ProductUploadResponse> {
-                        override fun onResponse(
-                            call: Call<ProductUploadResponse>,
-                            response: Response<ProductUploadResponse>
-                        ) {
-                            scope.launch {
-                                if (response.isSuccessful) {
-                                    response.body()?.apply {
-                                        output.send(DataStatus.success(this))
-                                    }
-                                    return@launch
-                                }
-                                response.body()?.apply {
-                                    output.send(DataStatus.failed<ProductUploadResponse>(this.message))
-                                }
-                            }
-                        }
+        emit(DataStatus.loading())
+        val imageFile = if (uri != null) {
+            //copying file from external storage to app cache
+            val parcelFileDescriptor =
+                context.contentResolver.openFileDescriptor(uri, "r", null)
+            val file = File(context.cacheDir, context.contentResolver.getFileName(uri))
+            val inputStream = FileInputStream(parcelFileDescriptor?.fileDescriptor)
+            val outputStream = FileOutputStream(file)
+            inputStream.copyTo(outputStream)
+            MultipartBody.Part.createFormData("file", "file", ProductUploadRequest(file, "image"))
+        } else {
+            null
+        }
+        val response = productService.postProductWithImage(
+            product.productName.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+            product.productType.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+            product.price.toString()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+            product.tax.toString()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+            imageFile
+        )
+        when (response.code()) {
+            200 -> {
+                response.body()?.apply {
+                    emit(DataStatus.success(this))
+                }
+            }
 
-                        override fun onFailure(
-                            call: Call<ProductUploadResponse>,
-                            t: Throwable
-                        ) {
-                            scope.launch {
-                                output.send(DataStatus.failed<ProductUploadResponse>(t.message.toString()))
-                            }
-                        }
-
-                    }
-                )
-            } else {
-                val request = productService.postProductWithoutImage(
-                    product.productName.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
-                    product.productType.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
-                    product.price.toString()
-                        .toRequestBody("multipart/form-data".toMediaTypeOrNull()),
-                    product.tax.toString()
-                        .toRequestBody("multipart/form-data".toMediaTypeOrNull())
-                )
-                request.enqueue(
-                    object : Callback<ProductUploadResponse> {
-                        override fun onResponse(
-                            call: Call<ProductUploadResponse>,
-                            response: Response<ProductUploadResponse>
-                        ) {
-                            scope.launch {
-                                if (response.isSuccessful) {
-                                    response.body()?.apply {
-                                        output.send(DataStatus.success(this))
-                                    }
-                                    return@launch
-                                }
-                                response.body()?.apply {
-                                    output.send(DataStatus.failed<ProductUploadResponse>(this.message))
-                                }
-                            }
-                        }
-
-                        override fun onFailure(
-                            call: Call<ProductUploadResponse>,
-                            t: Throwable
-                        ) {
-                            scope.launch {
-                                output.send(DataStatus.failed<ProductUploadResponse>(t.message.toString()))
-                            }
-                        }
-
-                    }
-                )
+            400, 500 -> {
+                response.body()?.apply {
+                    emit(DataStatus.failed<ProductUploadResponse>(this.message))
+                }
             }
         }
-        emitAll(output)
-    }.flowOn(Dispatchers.IO).catch { t -> emit(DataStatus.failed(t.message.toString())) }
+    }.catch { emit(DataStatus.failed(it.message.toString())) }
+        .flowOn(Dispatchers.IO)
 
 }
