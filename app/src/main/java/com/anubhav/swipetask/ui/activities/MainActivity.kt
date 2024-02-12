@@ -5,20 +5,24 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.databinding.DataBindingUtil
+import com.anubhav.swipetask.MainApplication
 import com.anubhav.swipetask.R
 import com.anubhav.swipetask.databinding.ActivityMainBinding
+import com.anubhav.swipetask.repositories.models.DataStatus
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var _binding: ActivityMainBinding
     private val binding get() = _binding
-    private val viewModel: MainViewModel by viewModel()
+    private val viewModel: MainViewModel by inject()
     private val TAG = "Main-View-Model"
     private val getActionIntentResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -28,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (!isGranted) {
-            if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)){
+            if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
                 showRequestPermissionRationale()
             }
         }
@@ -41,6 +45,48 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         setSupportActionBar(binding.mainToolbar)
         requestNotificationPermission()
+        MainApplication.productUploadStatus.observe(this) {
+            Log.i(TAG,"It is uploaded In activity")
+            when (it.status) {
+                DataStatus.Status.Failed -> {
+                    it.data?.apply {
+                        val title = this.message
+                        val message = "We couldn't upload your product. Try again later."
+                        MaterialAlertDialogBuilder(
+                            this@MainActivity,
+                            com.google.android.material.R.style.MaterialAlertDialog_Material3
+                        )
+                            .setTitle(title)
+                            .setMessage(message)
+                            .setPositiveButton("OK") { _, _ -> }
+                            .setCancelable(true)
+                            .show()
+                    }
+                }
+
+                DataStatus.Status.Loading -> {
+
+                }
+
+                DataStatus.Status.Success -> {
+                    it.data?.apply {
+                        val title = this.message
+                        val productName = this.productDetails.productName
+                        val productId = this.productId
+                        val message = productName.plus(" has been uploaded and assigned the product id as ").plus(productId)
+                        MaterialAlertDialogBuilder(
+                            this@MainActivity,
+                            com.google.android.material.R.style.MaterialAlertDialog_Material3
+                        )
+                            .setTitle(title)
+                            .setMessage(message)
+                            .setPositiveButton("OK") { _, _ -> }
+                            .setCancelable(true)
+                            .show()
+                    }
+                }
+            }
+        }
     }
 
     private fun requestNotificationPermission() {

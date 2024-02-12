@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.anubhav.swipetask.MainApplication
 import com.anubhav.swipetask.R
 import com.anubhav.swipetask.databinding.FragmentProductFeedBinding
 import com.anubhav.swipetask.models.ProgressStatus
@@ -260,6 +261,21 @@ class ProductFeedFragment : Fragment() {
             uploadNewProductFragment.show(
                 parentFragmentManager, UploadNewProductFragment.TAG
             )
+        }
+        MainApplication.productUploadStatus.observe(viewLifecycleOwner) {
+            when (it.status) {
+                DataStatus.Status.Failed -> {
+
+                }
+
+                DataStatus.Status.Loading -> {
+
+                }
+
+                DataStatus.Status.Success -> {
+                    viewModel.pullProductsFromServer()
+                }
+            }
         }
     }
 

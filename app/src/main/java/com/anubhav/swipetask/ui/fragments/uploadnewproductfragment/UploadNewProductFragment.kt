@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresPermission
 import androidx.fragment.app.viewModels
 import com.anubhav.swipetask.R
 import com.anubhav.swipetask.databinding.FragmentUploadNewProductBinding
@@ -62,7 +63,7 @@ class UploadNewProductFragment : BottomSheetDialogFragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         return rootView
     }
-
+    @RequiresPermission("android.permission.POST_NOTIFICATIONS")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.uploadProductButton.setOnClickListener {
