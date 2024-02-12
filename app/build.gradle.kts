@@ -85,4 +85,7 @@ dependencies {
     //for shared view model
     implementation ("androidx.fragment:fragment-ktx:1.6.2")
 
+    //for splash api
+    implementation ("androidx.core:core-splashscreen:1.0.1")
+
 }

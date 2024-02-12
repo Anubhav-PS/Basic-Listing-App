@@ -49,7 +49,6 @@ class ProductFeedFragment : Fragment() {
         _binding = FragmentProductFeedBinding.inflate(inflater, container, false)
         rootView = binding.root
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.uploadProgress = progressStatus
         lifecycle.addObserver(viewModel)
         return rootView
     }

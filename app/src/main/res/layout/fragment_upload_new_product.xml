@@ -66,7 +66,7 @@
                 app:boxBackgroundColor="@color/white"
                 app:endIconMode="clear_text"
                 app:hintAnimationEnabled="true"
-                app:hintTextColor="@color/text_on_white_variant_1"
+                android:textColorHint="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/captionTextLabel">
@@ -100,7 +100,7 @@
                 android:hint="Price"
                 android:longClickable="false"
                 android:textAlignment="center"
-                android:textColor="@color/text_on_white_variant_2"
+                android:textColor="@color/text_on_white_variant_1"
                 android:textSize="16sp"
                 app:boxBackgroundColor="@color/input_layout_background"
                 app:boxCornerRadiusBottomEnd="8dp"
@@ -108,8 +108,8 @@
                 app:boxCornerRadiusTopEnd="8dp"
                 app:boxCornerRadiusTopStart="8dp"
                 app:boxStrokeWidth="0dp"
+                android:textColorHint="@color/black"
                 app:hintAnimationEnabled="true"
-                app:hintTextColor="@color/text_on_white_variant_1"
                 app:layout_constraintEnd_toStartOf="@id/centreGuideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/productNameTextInputLayout">
@@ -146,7 +146,7 @@
                 app:boxCornerRadiusTopStart="8dp"
                 app:boxStrokeWidth="0dp"
                 app:hintAnimationEnabled="true"
-                app:hintTextColor="@color/text_on_white_variant_1"
+                android:textColorHint="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/centreGuideline"
                 app:layout_constraintTop_toBottomOf="@id/productNameTextInputLayout">
@@ -171,11 +171,15 @@
                 android:layout_marginTop="36dp"
                 android:fontFamily="@font/montserrat"
                 android:hint="Product category"
-                app:boxBackgroundColor="@color/input_layout_background"
+                app:boxBackgroundColor="@color/white"
                 app:boxStrokeWidth="0dp"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
                 app:hintAnimationEnabled="true"
                 app:hintEnabled="true"
-                app:hintTextColor="@color/text_on_white_variant_1"
+                android:textColorHint="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/productPriceTextInputLayout">
@@ -185,6 +189,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:textColor="@color/text_on_white_variant_1"
+                    android:textColorHint="@color/text_on_white_variant_1"
                     android:fontFamily="@font/montserrat"
                     android:inputType="none" />
 
