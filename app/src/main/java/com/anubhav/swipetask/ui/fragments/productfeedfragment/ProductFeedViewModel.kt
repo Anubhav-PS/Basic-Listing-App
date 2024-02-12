@@ -1,6 +1,5 @@
 package com.anubhav.swipetask.ui.fragments.productfeedfragment
 
-import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -13,7 +12,6 @@ import com.anubhav.swipetask.models.Product
 import com.anubhav.swipetask.repositories.ProductsRepository
 import com.anubhav.swipetask.repositories.models.DataStatus
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ProductFeedViewModel(private val productRepo: ProductsRepository) : ViewModel(),
@@ -24,9 +22,8 @@ class ProductFeedViewModel(private val productRepo: ProductsRepository) : ViewMo
     private val _productListFromNetworkStatus: MutableLiveData<DataStatus.Status> =
         MutableLiveData()
     var productListFromNetworkStatus: LiveData<DataStatus.Status> = _productListFromNetworkStatus
-
     private val _queriedProducts: MutableLiveData<DataStatus<List<Product>>> = MutableLiveData()
-    val queriedProduct : LiveData<DataStatus<List<Product>>> = _queriedProducts
+    val queriedProduct: LiveData<DataStatus<List<Product>>> = _queriedProducts
 
     fun pullProductsFromServer() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -57,9 +54,9 @@ class ProductFeedViewModel(private val productRepo: ProductsRepository) : ViewMo
         }
     }
 
-    fun searchProduct(query:String){
-        viewModelScope.launch (Dispatchers.IO){
-            productRepo.searchProduct(query).collect{
+    fun searchProduct(query: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            productRepo.searchProduct(query).collect {
                 _queriedProducts.postValue(it)
             }
         }

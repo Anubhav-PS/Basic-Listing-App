@@ -13,6 +13,7 @@ val appModule = module {
         serviceModule,
         repositoryModule,
         viewModelModule,
-        utilsModule
+        utilsModule,
+        notificationModule
     )
 }

@@ -5,7 +5,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
-import android.os.Build
 import androidx.lifecycle.LiveData
 
 class ConnectivityListener(private val connectivityManager: ConnectivityManager) :
@@ -37,7 +36,7 @@ class ConnectivityListener(private val connectivityManager: ConnectivityManager)
         connectivityManager.unregisterNetworkCallback(networkCallback)
     }
 
-    fun isNetworkAvailable() : Boolean{
+    fun isNetworkAvailable(): Boolean {
         return connectivityManager.activeNetworkInfo?.isConnected ?: false
     }
 

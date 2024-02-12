@@ -10,6 +10,9 @@
     <color name="text_on_white_variant_0">#707070</color>
     <color name="text_on_white_variant_1">#4F4E4E</color>
     <color name="text_on_white_variant_2">#383838</color>
-
+    <color name="input_layout_background">#F2F2F9</color>
+    <color name="stroked_text_view_background">#F4F4F9</color>
+    <color name="stroked_text_view_stroke_color">#CD2E84D2</color>
+    <color name="button_stroke_color">#707070</color>
 
 </resources>

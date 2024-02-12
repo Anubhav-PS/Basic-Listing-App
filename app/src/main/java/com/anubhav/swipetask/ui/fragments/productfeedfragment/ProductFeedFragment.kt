@@ -19,18 +19,20 @@ import com.anubhav.swipetask.R
 import com.anubhav.swipetask.databinding.FragmentProductFeedBinding
 import com.anubhav.swipetask.repositories.models.DataStatus
 import com.anubhav.swipetask.ui.adapters.FeedPageProductAdapter
+import com.anubhav.swipetask.ui.fragments.uploadnewproductfragment.UploadNewProductFragment
 import com.anubhav.swipetask.utils.ConnectivityListener
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class ProductFeedFragment : Fragment() {
 
     private lateinit var _binding: FragmentProductFeedBinding
     private val binding get() = _binding
     private lateinit var rootView: View
-    private val viewModel: ProductFeedViewModel by inject()
+    private val viewModel: ProductFeedViewModel by activityViewModel()
     private val connectivityListener: ConnectivityListener by inject()
     private var networkNotAvailable: Boolean = false
     private var freshListIsLoadedFromServer: Boolean = false
@@ -243,12 +245,18 @@ class ProductFeedFragment : Fragment() {
                             "Sorry, we couldn't find any results matching your search.",
                             Snackbar.LENGTH_LONG
                         )
-                        snackBar.setBackgroundTint(Color.parseColor("#FFFFFF"))
-                        snackBar.setTextColor(Color.parseColor("#000000"))
+                        snackBar.setBackgroundTint(Color.parseColor("#000000"))
+                        snackBar.setTextColor(Color.parseColor("#FFFFFF"))
                         snackBar.show()
                     }
                 }
             }
+        }
+        binding.addProductExtendedFab.setOnClickListener {
+            val uploadNewProductFragment = UploadNewProductFragment()
+            uploadNewProductFragment.show(
+                parentFragmentManager, UploadNewProductFragment.TAG
+            )
         }
     }
 

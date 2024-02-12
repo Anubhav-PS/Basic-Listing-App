@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/uploadNewProductFragment"
-        android:name="com.anubhav.swipetask.ui.fragments.UploadNewProductFragment"
+        android:name="com.anubhav.swipetask.ui.fragments.uploadnewproductfragment.UploadNewProductFragment"
         android:label="Add Product"
         tools:layout="@layout/fragment_upload_new_product" >
         <action

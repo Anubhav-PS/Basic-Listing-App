@@ -4,7 +4,6 @@ import org.koin.dsl.module
 
 val serviceModule = module {
     single { baseUrl }
-    single { provideMoshi() }
-    single { provideRetrofit(get(), get()) }
+    single { provideRetrofit(get()) }
     single { provideProductService(get()) }
 }

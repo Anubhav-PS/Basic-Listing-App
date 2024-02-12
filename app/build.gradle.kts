@@ -57,9 +57,9 @@ dependencies {
     // retrofit
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
 
-    // moshi
-    implementation ("com.squareup.moshi:moshi-kotlin:1.15.0")
-    implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
+   /* // moshi
+    implementation ("com.squareup.moshi:moshi-kotlin:1.15.0")*/
+        implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // Koin
     implementation("io.insert-koin:koin-android:3.6.0-wasm-alpha2")
@@ -81,5 +81,8 @@ dependencies {
 
     //coil
     implementation ("io.coil-kt:coil:2.4.0")
+
+    //for shared view model
+    implementation ("androidx.fragment:fragment-ktx:1.6.2")
 
 }
