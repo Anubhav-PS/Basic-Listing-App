@@ -14,5 +14,8 @@
     <color name="stroked_text_view_background">#F4F4F9</color>
     <color name="stroked_text_view_stroke_color">#CD2E84D2</color>
     <color name="button_stroke_color">#707070</color>
+    <color name="input_layout_error_icon_color">#ED1229</color>
+    <color name="input_layout_error_text_color">#ED1229</color>
+    <color name="ripple_color">#9ED8D8D8</color>
 
 </resources>

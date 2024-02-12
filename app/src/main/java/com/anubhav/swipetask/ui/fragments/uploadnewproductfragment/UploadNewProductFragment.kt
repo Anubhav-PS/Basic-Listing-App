@@ -221,6 +221,11 @@ class UploadNewProductFragment : BottomSheetDialogFragment() {
         inputProductName = binding.productNameTextInputEditText.text.toString()
         inputProductPrice = parsedPrice
         inputTax = parsedTax
+        if(inputTax>inputProductPrice){
+            binding.productTaxTextInputLayout.error = "Tax cannot be more than price"
+            return false
+        }
+        binding.productTaxTextInputLayout.error = null
         inputProductType =
             resources.getStringArray(R.array.product_categories_array)[selectedCategoryPosition]
         return true

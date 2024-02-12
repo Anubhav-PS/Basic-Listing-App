@@ -4,6 +4,7 @@
         <!-- Customize your dark theme here. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="android:statusBarColor">@color/primary</item>
+        <item name="colorControlHighlight">@color/ripple_color</item>
     </style>
     <style name="ToolbarTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:fontFamily">@font/montserrat_medium</item>

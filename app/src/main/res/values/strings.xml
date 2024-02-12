@@ -2,6 +2,18 @@
     <string name="app_name">SwipeTask</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="product_category_text_value">Product Category</string>
+    <string name="filter_text_label">Filter</string>
+    <string name="sort_text_label">Sort</string>
+    <string name="new_fab_button">New</string>
+    <string name="add_new_product_fragment_title">What is your product about</string>
+    <string name="add_new_product_page_caption">Give us more information</string>
+    <string name="product_name_label">Product Name</string>
+    <string name="price_label">Price</string>
+    <string name="tax_amount_label">Tax Amount</string>
+    <string name="product_category_label">Product category</string>
+    <string name="upload_image_label">Upload Image</string>
+    <string name="upload_label">Upload</string>
 
 
     <string-array name="product_categories_array">
