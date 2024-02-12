@@ -14,7 +14,9 @@ import com.anubhav.swipetask.repositories.models.DataStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ProductFeedViewModel(private val productRepo: ProductsRepository) : ViewModel(),
+class ProductFeedViewModel(
+    private val productRepo: ProductsRepository
+) : ViewModel(),
     LifecycleEventObserver {
 
     private val TAG = "Product-Feed-View-Model"

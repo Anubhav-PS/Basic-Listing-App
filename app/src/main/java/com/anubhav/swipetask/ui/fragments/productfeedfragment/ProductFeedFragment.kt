@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.anubhav.swipetask.R
 import com.anubhav.swipetask.databinding.FragmentProductFeedBinding
+import com.anubhav.swipetask.models.ProgressStatus
 import com.anubhav.swipetask.repositories.models.DataStatus
+import com.anubhav.swipetask.ui.activities.MainViewModel
 import com.anubhav.swipetask.ui.adapters.FeedPageProductAdapter
 import com.anubhav.swipetask.ui.fragments.uploadnewproductfragment.UploadNewProductFragment
 import com.anubhav.swipetask.utils.ConnectivityListener
@@ -25,18 +27,19 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class ProductFeedFragment : Fragment() {
 
     private lateinit var _binding: FragmentProductFeedBinding
     private val binding get() = _binding
     private lateinit var rootView: View
-    private val viewModel: ProductFeedViewModel by activityViewModel()
+    private val mainViewModel: MainViewModel by inject()
+    private val viewModel: ProductFeedViewModel by inject()
     private val connectivityListener: ConnectivityListener by inject()
     private var networkNotAvailable: Boolean = false
     private var freshListIsLoadedFromServer: Boolean = false
     private var isSearchViewOpened: Boolean = false
+    private var progressStatus: ProgressStatus = ProgressStatus("", 0, false, false)
     val TAG = "Products-Feed-Fragment"
 
     override fun onCreateView(
@@ -46,6 +49,7 @@ class ProductFeedFragment : Fragment() {
         _binding = FragmentProductFeedBinding.inflate(inflater, container, false)
         rootView = binding.root
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.uploadProgress = progressStatus
         lifecycle.addObserver(viewModel)
         return rootView
     }

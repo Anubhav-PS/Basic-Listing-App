@@ -5,6 +5,12 @@
 
     <data>
 
+        <variable
+            name="uploadProgress"
+            type="com.anubhav.swipetask.models.ProgressStatus" />
+
+        <import type="android.view.View" />
+
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -76,6 +82,74 @@
                 </com.google.android.material.textview.MaterialTextView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/progressStatusCardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginVertical="4dp"
+                app:cardBackgroundColor="@color/white"
+                android:visibility="@{uploadProgress.active?View.VISIBLE : View.GONE}"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/productFilterNSortConstraintLayout">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/progressStatusConstaintLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textualStatusTextValue"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{uploadProgress.message}"
+                        android:textColor="@color/text_on_white_variant_2"
+                        android:textSize="12sp"
+                        app:fontFamily="@font/montserrat"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Uploading in progress">
+
+                    </com.google.android.material.textview.MaterialTextView>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/progressPercentageTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(uploadProgress.percentage)+`%`}"
+                        android:textColor="@color/text_on_white_variant_2"
+                        android:textSize="12sp"
+                        android:visibility="@{uploadProgress.indeterminate?View.GONE:View.VISIBLE}"
+                        app:fontFamily="@font/montserrat"
+                        app:layout_constraintBottom_toBottomOf="@id/uploadProgressBar"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/uploadProgressBar"
+                        tools:text="48%">
+
+                    </com.google.android.material.textview.MaterialTextView>
+
+                    <ProgressBar
+                        android:id="@+id/uploadProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:indeterminate="@{uploadProgress.indeterminate}"
+                        android:indeterminateTint="@color/primary"
+                        app:layout_constraintEnd_toStartOf="@id/progressPercentageTextView"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textualStatusTextValue" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/productsRecyclerView"

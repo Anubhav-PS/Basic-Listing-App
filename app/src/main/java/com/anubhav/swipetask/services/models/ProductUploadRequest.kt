@@ -9,14 +9,8 @@ import java.io.FileInputStream
 
 class ProductUploadRequest(
     val file: File,
-    val contentType: String,
-    val callback: UploadCallback
+    val contentType: String
 ) : RequestBody() {
-
-    interface UploadCallback {
-
-        fun onProgressUpdate(percentage: Int)
-    }
 
     companion object {
 
@@ -28,15 +22,12 @@ class ProductUploadRequest(
     override fun contentLength() = file.length()
 
     override fun writeTo(sink: BufferedSink) {
-        val length = file.length()
         val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
         val fileInputStream = FileInputStream(file)
         var uploaded = 0L
         fileInputStream.use { inputStream ->
             var read: Int
             while (inputStream.read(buffer).also { read = it } != -1) {
-                val percentage = (100 * uploaded / length).toInt()
-                callback.onProgressUpdate(percentage)
                 uploaded += read
                 sink.write(buffer, 0, read)
             }

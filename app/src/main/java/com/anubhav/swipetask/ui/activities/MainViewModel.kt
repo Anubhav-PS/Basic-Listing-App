@@ -12,54 +12,37 @@ import androidx.lifecycle.viewModelScope
 import com.anubhav.swipetask.models.Product
 import com.anubhav.swipetask.repositories.ProductsRepository
 import com.anubhav.swipetask.repositories.models.DataStatus
-import com.anubhav.swipetask.services.models.ProductUploadRequest
 import com.anubhav.swipetask.services.models.ProductUploadResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val productRepo: ProductsRepository,
+    application: Application,
+    private val productsRepo: ProductsRepository,
     private val notificationBuilder: NotificationCompat.Builder,
-    private val notificationManager: NotificationManagerCompat,
-    application: Application
+    private val notificationManager: NotificationManagerCompat
 ) :
-    AndroidViewModel(application), ProductUploadRequest.UploadCallback,
+    AndroidViewModel(application),
     ProductsRepository.ProductsResponseCallback {
 
     private val TAG = "Main-Activity-View-Model"
-    private val _progressBarStatus: MutableLiveData<Int> = MutableLiveData()
-    val progressBarStatus: LiveData<Int> = _progressBarStatus
     private val _productUploadStatus: MutableLiveData<DataStatus<ProductUploadResponse?>> =
         MutableLiveData()
     val productUploadStatus: LiveData<DataStatus<ProductUploadResponse?>> = _productUploadStatus
 
     fun uploadProduct(product: Product, uri: Uri?) {
         viewModelScope.launch(Dispatchers.IO) {
-            productRepo.postProduct(
+            productsRepo.postProduct(
                 product,
                 uri,
-                this@MainViewModel,
                 this@MainViewModel
             )
         }
     }
 
     @RequiresPermission("android.permission.POST_NOTIFICATIONS")
-    override fun onProgressUpdate(percentage: Int) {
-        if (percentage == 0) notificationManager.notify(
-            1,
-            notificationBuilder.setContentTitle("Product image is being uploaded.")
-                .setContentText("Your product image upload has started.").build()
-        )
-        if (percentage == 99) notificationManager.notify(
-            1,
-            notificationBuilder.setContentTitle("Product image has been uploaded.")
-                .setContentText("Your product image upload has started.").build()
-        )
-    }
-
-    @RequiresPermission("android.permission.POST_NOTIFICATIONS")
     override fun onStatusUpdated(dataStatus: DataStatus<ProductUploadResponse?>) {
+        _productUploadStatus.postValue(dataStatus)
         when (dataStatus.status) {
             DataStatus.Status.Failed -> {
                 notificationManager.notify(
@@ -83,5 +66,6 @@ class MainViewModel(
             }
         }
     }
+
 
 }

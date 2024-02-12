@@ -2,7 +2,6 @@ package com.anubhav.swipetask.repositories
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import com.anubhav.swipetask.database.dao.ProductsDao
 import com.anubhav.swipetask.models.Product
 import com.anubhav.swipetask.repositories.models.DataStatus
@@ -10,11 +9,14 @@ import com.anubhav.swipetask.services.models.ProductUploadRequest
 import com.anubhav.swipetask.services.models.ProductUploadResponse
 import com.anubhav.swipetask.services.services.ProductsService
 import com.anubhav.swipetask.utils.getFileName
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -33,6 +35,7 @@ class ProductsRepository(
 
     private val TAG = "Products-Repository"
     val allProducts: Flow<MutableList<Product>> = productsDao.getAllProducts()
+    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     suspend fun pullProductsFromServer() = flow {
         emit(DataStatus.loading())
@@ -65,7 +68,6 @@ class ProductsRepository(
     fun postProduct(
         product: Product,
         uri: Uri?,
-        productUploadRequestCallback: ProductUploadRequest.UploadCallback,
         productsResponseCallback: ProductsResponseCallback,
     ) {
         if (uri != null) {
@@ -77,7 +79,7 @@ class ProductsRepository(
             val outputStream = FileOutputStream(file)
             inputStream.copyTo(outputStream)
             //create the request body
-            val requestBody = ProductUploadRequest(file, "image", productUploadRequestCallback)
+            val requestBody = ProductUploadRequest(file, "image")
             val request = productService.postProductWithImage(
                 product.productName.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
                 product.productType.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
@@ -91,15 +93,19 @@ class ProductsRepository(
                         call: Call<ProductUploadResponse>,
                         response: Response<ProductUploadResponse>
                     ) {
-                        if (response.isSuccessful) {
-                            productsResponseCallback.onStatusUpdated(DataStatus.success(response.body()))
-                        } else {
-                            productsResponseCallback.onStatusUpdated(DataStatus.failed(response.message()))
+                        scope.launch {
+                            if (response.isSuccessful) {
+                                productsResponseCallback.onStatusUpdated(DataStatus.success(response.body()))
+                            } else {
+                                productsResponseCallback.onStatusUpdated(DataStatus.failed(response.message()))
+                            }
                         }
                     }
 
                     override fun onFailure(call: Call<ProductUploadResponse>, t: Throwable) {
-                        productsResponseCallback.onStatusUpdated(DataStatus.failed(t.message.toString()))
+                        scope.launch {
+                            productsResponseCallback.onStatusUpdated(DataStatus.failed(t.message.toString()))
+                        }
                     }
 
                 }
@@ -119,15 +125,20 @@ class ProductsRepository(
                     response: Response<ProductUploadResponse>
                 ) {
                     if (response.isSuccessful) {
-                        Log.i(TAG, "Successfulll uploaded")
-                        productsResponseCallback.onStatusUpdated(DataStatus.success(response.body()))
+                        scope.launch {
+                            productsResponseCallback.onStatusUpdated(DataStatus.success(response.body()))
+                        }
                     } else {
-                        productsResponseCallback.onStatusUpdated(DataStatus.failed(response.message()))
+                        scope.launch {
+                            productsResponseCallback.onStatusUpdated(DataStatus.failed(response.message()))
+                        }
                     }
                 }
 
                 override fun onFailure(call: Call<ProductUploadResponse>, t: Throwable) {
-                    productsResponseCallback.onStatusUpdated(DataStatus.failed(t.message.toString()))
+                    scope.launch {
+                        productsResponseCallback.onStatusUpdated(DataStatus.failed(t.message.toString()))
+                    }
                 }
 
             }

@@ -11,10 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.viewModels
 import com.anubhav.swipetask.R
 import com.anubhav.swipetask.databinding.FragmentUploadNewProductBinding
 import com.anubhav.swipetask.models.Product
 import com.anubhav.swipetask.ui.activities.MainViewModel
+import com.anubhav.swipetask.ui.fragments.productfeedfragment.ProductFeedViewModel
 import com.anubhav.swipetask.utils.ConnectivityListener
 import com.anubhav.swipetask.utils.parseStringToPrice
 import com.anubhav.swipetask.utils.validatePriceFormat
@@ -27,7 +29,7 @@ class UploadNewProductFragment : BottomSheetDialogFragment() {
     private lateinit var _binding: FragmentUploadNewProductBinding
     private val binding get() = _binding
     private lateinit var rootView: View
-    private val mainViewModel: MainViewModel by inject()
+    private val mainViewModel : MainViewModel by inject()
     private val connectivityListener: ConnectivityListener by inject()
     private var networkNotAvailable: Boolean = false
     private var selectedCategoryPosition: Int = 0
