@@ -62,7 +62,7 @@ class ProductsRepository(
         }
     }.catch { emit(DataStatus.failed(it.message.toString())) }.flowOn(Dispatchers.IO)
 
-    suspend fun postProduct(
+    fun postProduct(
         product: Product,
         uri: Uri?,
         productUploadRequestCallback: ProductUploadRequest.UploadCallback,

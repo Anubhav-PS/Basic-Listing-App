@@ -32,15 +32,6 @@ class MainViewModel(
     private val _productUploadStatus: MutableLiveData<DataStatus<ProductUploadResponse?>> =
         MutableLiveData()
     val productUploadStatus: LiveData<DataStatus<ProductUploadResponse?>> = _productUploadStatus
-    private var imageUploadCallbackCallback: ProductUploadRequest.UploadCallback? = null
-    private var productsResponseCallback: ProductsRepository.ProductsResponseCallback? = null
-    fun setCallbacksListener(
-        imageUploadCallbackCallback: ProductUploadRequest.UploadCallback,
-        productsResponseCallback: ProductsRepository.ProductsResponseCallback
-    ) {
-        this.imageUploadCallbackCallback = imageUploadCallbackCallback
-        this.productsResponseCallback = productsResponseCallback
-    }
 
     fun uploadProduct(product: Product, uri: Uri?) {
         viewModelScope.launch(Dispatchers.IO) {
