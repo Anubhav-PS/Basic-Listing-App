@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -16,7 +15,6 @@ import com.anubhav.swipetask.databinding.ActivityMainBinding
 import com.anubhav.swipetask.repositories.models.DataStatus
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.mainToolbar)
         requestNotificationPermission()
         MainApplication.productUploadStatus.observe(this) {
-            Log.i(TAG,"It is uploaded In activity")
             when (it.status) {
                 DataStatus.Status.Failed -> {
                     it.data?.apply {
@@ -73,7 +70,9 @@ class MainActivity : AppCompatActivity() {
                         val title = this.message
                         val productName = this.productDetails.productName
                         val productId = this.productId
-                        val message = productName.plus(" has been uploaded and assigned the product id as ").plus(productId)
+                        val message =
+                            productName.plus(" has been uploaded and assigned the product id as ")
+                                .plus(productId)
                         MaterialAlertDialogBuilder(
                             this@MainActivity,
                             com.google.android.material.R.style.MaterialAlertDialog_Material3

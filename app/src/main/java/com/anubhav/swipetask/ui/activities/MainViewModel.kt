@@ -48,7 +48,6 @@ class MainViewModel(
 
                     DataStatus.Status.Success -> {
                         MainApplication._productUploadStatus.postValue(it)
-                        Log.i(TAG, "It is uploaded IN MAN VM")
                         val content = "\nProduct ID is : ${it.data?.productId}"
                         notificationManager.notify(
                             1,
