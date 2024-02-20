@@ -1,4 +1,4 @@
-### Swipe Assignment : 
+### Basic Listing App : 
 
 This project pulls list of item from server and displays it in the app. It enables user to search by product by product name. User can also upload a product with or without image.
 
